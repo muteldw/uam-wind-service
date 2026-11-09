@@ -11,6 +11,13 @@
     160
   ],
   "scale": 0.01,
+  "mask": "mask.bin",
+  "mask_shape": [
+    18,
+    160,
+    160
+  ],
+  "mask_note": "1 = building (ws == 0 in source), 0 = open air",
   "z": [
     5.0,
     10.0,

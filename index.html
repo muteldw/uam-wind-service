@@ -14,47 +14,84 @@
 </header>
 
 <main>
-  <section class="panel" id="controls">
+  <section class="panel controls">
     <label>시작 시각 (KST)
       <input type="datetime-local" id="startTime">
     </label>
-    <label>예측 시간 <span id="hourLabel">+0 h</span>
+    <div class="playbar">
+      <button id="play" class="btn" aria-pressed="false">▶ 재생</button>
+      <div class="seg" role="group" aria-label="재생 속도">
+        <button type="button" data-speed="1" class="on" aria-pressed="true">1×</button>
+        <button type="button" data-speed="2" aria-pressed="false">2×</button>
+        <button type="button" data-speed="5" aria-pressed="false">5×</button>
+      </div>
+    </div>
+    <label class="grow">예측 시간 <span id="hourLabel">+0 h</span>
       <input type="range" id="hour" min="0" max="48" step="1" value="0">
     </label>
     <label>수평 분포 고도
       <select id="level"></select>
     </label>
+    <p class="small hint">← → 키: 1시간씩 이동 · Space: 재생/정지 · 재생 속도 1·2·5배</p>
   </section>
 
   <section class="panel warn" id="warnBox">
     <div class="badge" id="badge">-</div>
-    <div>
+    <div class="warn-text">
       <div id="warnTitle"></div>
       <div class="small" id="warnDetail"></div>
     </div>
   </section>
 
+  <section class="panel legend" aria-label="경고 레전드">
+    <h2>경고 레전드 (V5 접근 고도 5–50 m 최대 수평풍속 기준)</h2>
+    <div class="lg"><span class="chip green"></span><b>정상</b><span>6 m/s 미만</span><span class="small">예: 4.0 m/s</span></div>
+    <div class="lg"><span class="chip amber"></span><b>주의</b><span>6 m/s 이상 ~ 8.8 m/s 미만</span><span class="small">예: 7.2 m/s</span></div>
+    <div class="lg"><span class="chip red"></span><b>경고</b><span>8.8 m/s(17 kt) 이상</span><span class="small">예: 10.5 m/s</span></div>
+    <p class="small">예시 값은 설명용입니다. 실제 판정은 모델 결과로 계산됩니다.</p>
+  </section>
+
   <section class="panel">
-    <h2>48시간 경고 추이 (V5 접근 고도 0–50 m, 최대 풍속)</h2>
+    <h2>48시간 경고 추이 (V5 접근 고도 5–50 m, 최대 수평풍속)</h2>
     <div id="timeline" class="timeline"></div>
     <div class="small" id="timelineLegend"></div>
   </section>
 
-  <section class="panel">
-    <h2>수평 분포 <span id="levelLabel"></span></h2>
-    <canvas id="hcanvas" width="640" height="640"></canvas>
-    <div class="small">색: 풍속 (m/s). 화살표: 풍향(바람이 불어가는 방향). ★ = V5 중심(격자 85,75)</div>
-  </section>
+  <section class="panel figure">
+    <div class="fig">
+      <div class="ypan">
+        <h2>Y축 단면 · 남북 (V5 통과)</h2>
+        <canvas id="ycanvas" width="420" height="640"></canvas>
+      </div>
 
-  <section class="panel">
-    <h2>연직 단면도 — Y축 (남북, V5 통과)</h2>
-    <canvas id="ycanvas" width="640" height="360"></canvas>
-  </section>
+      <div class="hpan">
+        <h2>수평 분포 · <span id="levelLabel"></span></h2>
+        <canvas id="hcanvas" width="640" height="640"></canvas>
+      </div>
 
-  <section class="panel">
-    <h2>연직 단면도 — X축 (동서, V5 통과)</h2>
-    <canvas id="xcanvas" width="640" height="360"></canvas>
-    <div class="small">세로축은 고도(m, 층 간격 불균등). 가로축은 V5 중심 기준 거리(km).</div>
+      <div class="lvl">
+        <div class="small">고도 선택</div>
+        <div id="levelList" class="levels" role="listbox" aria-label="고도 선택"></div>
+      </div>
+
+      <div class="xpan">
+        <h2>X축 단면 · 동서 (V5 통과)</h2>
+        <canvas id="xcanvas" width="640" height="420"></canvas>
+      </div>
+
+      <div class="cb">
+        <div class="small">풍속 색 (m/s): 수평풍속 √(u²+v²)</div>
+        <canvas id="cbar" width="600" height="22"></canvas>
+        <div class="ticks" id="ticks"></div>
+      </div>
+    </div>
+
+    <div class="vec small">
+      <p><b>수평 분포 화살표</b>: 수평풍 (u, v), 선택 고도의 10 m 격자. 화살표 방향 = 바람이 불어가는 방향, 길이 = 풍속(상한 있음). 우측 상단 기준 화살표는 10 m/s입니다.</p>
+      <p><b>Y축 단면 화살표</b>: 남북 수평풍 v와 연직풍 w, V5 열 기준. 색은 수평풍속 √(u²+v²).</p>
+      <p><b>X축 단면 화살표</b>: 동서 수평풍 u와 연직풍 w, V5 행 기준. 색은 수평풍속 √(u²+v²).</p>
+      <p><b>회색 사선(X) 표시</b>: 건물 셀(모델 수평풍속 0). 바람 값이 없는 곳입니다.</p>
+    </div>
   </section>
 
   <section class="panel small" id="method">
@@ -67,7 +104,7 @@
   </section>
 </main>
 
-<footer class="small">원자료: uvw.V5_GK_12m_sens_ws12_deg0 (단일 시점 기준장). 시간 변화는 데모용 합성.</footer>
+<footer class="small">원자료: uvw.V5_GK_12m_sens_ws12_deg0 (단일 시점 기준장, 건물 마스크 포함). 시간 변화는 데모용 합성.</footer>
 <script src="warning.js"></script>
 <script src="app.js"></script>
 </body>
