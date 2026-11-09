@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>V5 버티포트 풍향·풍속 예측</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>V5 버티포트 풍향·풍속 예측</h1>
+  <p class="sub">킨텍스 V5 예정지 · μ-WinS(MUKLIMO_3) 기반 · 10 m 격자 160×160 (1.6 km)</p>
+  <div class="demo">⚠ 데모 화면: 시간 변화는 합성 데이터입니다. 실측·실예보가 아닙니다.</div>
+</header>
+
+<main>
+  <section class="panel" id="controls">
+    <label>시작 시각 (KST)
+      <input type="datetime-local" id="startTime">
+    </label>
+    <label>예측 시간 <span id="hourLabel">+0 h</span>
+      <input type="range" id="hour" min="0" max="48" step="1" value="0">
+    </label>
+    <label>수평 분포 고도
+      <select id="level"></select>
+    </label>
+  </section>
+
+  <section class="panel warn" id="warnBox">
+    <div class="badge" id="badge">-</div>
+    <div>
+      <div id="warnTitle"></div>
+      <div class="small" id="warnDetail"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>48시간 경고 추이 (V5 접근 고도 0–50 m, 최대 풍속)</h2>
+    <div id="timeline" class="timeline"></div>
+    <div class="small" id="timelineLegend"></div>
+  </section>
+
+  <section class="panel">
+    <h2>수평 분포 <span id="levelLabel"></span></h2>
+    <canvas id="hcanvas" width="640" height="640"></canvas>
+    <div class="small">색: 풍속 (m/s). 화살표: 풍향(바람이 불어가는 방향). ★ = V5 중심(격자 85,75)</div>
+  </section>
+
+  <section class="panel">
+    <h2>연직 단면도 — Y축 (남북, V5 통과)</h2>
+    <canvas id="ycanvas" width="640" height="360"></canvas>
+  </section>
+
+  <section class="panel">
+    <h2>연직 단면도 — X축 (동서, V5 통과)</h2>
+    <canvas id="xcanvas" width="640" height="360"></canvas>
+    <div class="small">세로축은 고도(m, 층 간격 불균등). 가로축은 V5 중심 기준 거리(km).</div>
+  </section>
+
+  <section class="panel small" id="method">
+    <h2>경고 기준과 한계</h2>
+    <ul>
+      <li>평균풍속 8.8 m/s(17 kt) 이상을 <b>경고</b>, 6 m/s 이상을 <b>주의</b>로 표시합니다. 17 kt는 FAA·EASA 제어 가능 풍속 요건을 근거로 한 RWDI 제안치입니다(<a href="https://rwdi.com/wp-content/uploads/2025/06/Development-of-a-wind-based-criteria-for-vertiports.pdf">출처</a>).</li>
+      <li>6 m/s 주의선은 잠정값입니다. 횡풍·배풍·돌풍 한계와 난류 지수는 현재 자료에 없어서 계산하지 않았습니다.</li>
+      <li>현재 입력 자료는 유입풍 1.5배 문제가 남아 있어 풍속이 과대평가될 수 있습니다.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="small">원자료: uvw.V5_GK_12m_sens_ws12_deg0 (단일 시점 기준장). 시간 변화는 데모용 합성.</footer>
+<script src="warning.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

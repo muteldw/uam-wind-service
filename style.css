@@ -1,0 +1,25 @@
+:root{--bg:#f6f7f9;--fg:#1d2430;--card:#fff;--line:#dfe3ea;--muted:#5b6575;--green:#2e9e5b;--amber:#e5a300;--red:#d23b3b;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11151c;--fg:#e6eaf0;--card:#1a212b;--line:#2c3644;--muted:#9aa5b5;color-scheme:dark}}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 -apple-system,"Segoe UI","Noto Sans KR",sans-serif;padding:0 max(16px,env(safe-area-inset-left,0px)) 24px max(16px,env(safe-area-inset-right,0px))}
+header{padding:20px 0 8px}
+h1{font-size:20px;margin:0}
+h2{font-size:15px;margin:0 0 8px}
+.sub{color:var(--muted);margin:2px 0 8px}
+.demo{background:#fff4d6;color:#6b4b00;border:1px solid #e8c766;border-radius:8px;padding:6px 10px;font-size:13px}
+main{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+#controls{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+#controls label{display:flex;flex-direction:column;gap:4px;min-width:0}
+#controls input[type=range]{width:min(100%,260px)}
+select,input[type=datetime-local]{font:inherit;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg)}
+.warn{display:flex;gap:12px;align-items:center}
+.badge{min-width:76px;text-align:center;font-weight:700;color:#fff;padding:10px 6px;border-radius:8px;background:var(--muted)}
+.badge.green{background:var(--green)}.badge.amber{background:var(--amber);color:#1d1d1d}.badge.red{background:var(--red)}
+.timeline{display:grid;grid-template-columns:repeat(49,1fr);gap:2px;height:36px}
+.slot{background:var(--green);border-radius:2px;cursor:pointer}
+.slot.amber{background:var(--amber)}.slot.red{background:var(--red)}
+.slot.cur{outline:2px solid var(--fg)}
+canvas{width:100%;height:auto;display:block;background:var(--card);border-radius:6px;image-rendering:auto}
+.small{color:var(--muted);font-size:12px}
+a{color:inherit}
+footer{margin-top:14px}

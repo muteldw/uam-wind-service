@@ -1,0 +1,39 @@
+{
+  "vars": [
+    "u",
+    "v",
+    "w"
+  ],
+  "shape": [
+    3,
+    18,
+    160,
+    160
+  ],
+  "scale": 0.01,
+  "z": [
+    5.0,
+    10.0,
+    15.0,
+    20.0,
+    25.0,
+    30.0,
+    35.0,
+    40.0,
+    45.0,
+    50.0,
+    85.0,
+    120.0,
+    160.0,
+    200.0,
+    300.0,
+    400.0,
+    500.0,
+    600.0
+  ],
+  "x_index_vertiport": 84,
+  "y_index_vertiport": 74,
+  "grid_m": 10.0,
+  "source": "uvw.V5_GK_12m_sens_ws12_deg0_000.nc",
+  "note": "Single model case (MUKLIMO_3 sensitivity, 12 m/s, from 0 deg). Not a time series."
+}
